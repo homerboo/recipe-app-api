@@ -28,8 +28,8 @@ COPY ./app /app
 # -D means run applications only
 RUN adduser -D user
 
-RUN chown -R user:user /vol/
-RUN chmod -R 755 /vol/web
+# RUN chown -R user:user /vol/
+# RUN chmod -R 755 /vol/web
 
 # Switch docker to user
 # This is for security
