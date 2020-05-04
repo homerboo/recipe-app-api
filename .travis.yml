@@ -1,0 +1,15 @@
+# Language that Travis should expect
+language: python
+python:
+  - "3.8"
+
+  # The docker files have the actual sub services 
+services:
+  - docker
+
+# Before script (before any automation commands)
+before_script: pip install docker-compose
+
+
+script:
+  - docker-compose run app sh -c "python manage.py test && flake8"
