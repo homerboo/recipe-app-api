@@ -1,6 +1,6 @@
 FROM python:3.8-alpine
 #who is maintianing
-LABEL key="homerboo" 
+MAINTAINER homerboo 
 # python unbuffered environment variable
 # recommended value for python in docker containers
 #    The output won't be buffered and will be printed directly
@@ -27,6 +27,9 @@ COPY ./app /app
 # Create user to run app using docker
 # -D means run applications only
 RUN adduser -D user
+
+RUN chown -R user:user /vol/
+RUN chmod -R 755 /vol/web
 
 # Switch docker to user
 # This is for security
