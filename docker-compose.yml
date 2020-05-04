@@ -1,0 +1,20 @@
+# Version
+version: "3"
+
+# Services
+# A service called app and the build section will be current directory
+# Port maps local host port to docker image port
+# Volumes allows us to automatically move updates from project to docker container image in real time
+# Command is what's used to run the application in the docker container
+#   Shell -command 0.0.0.0 is all IP addresses available on docker container
+services: 
+  app:
+    build:
+      context: .
+    ports: 
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+
