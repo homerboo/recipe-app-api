@@ -1,38 +1,22 @@
-FROM python:3.8-alpine
-#who is maintianing
-MAINTAINER homerboo 
-# python unbuffered environment variable
-# recommended value for python in docker containers
-#    The output won't be buffered and will be printed directly
+FROM python:3.7-alpine
+MAINTAINER London App Developer Ltd
+
 ENV PYTHONUNBUFFERED 1
 
-# Point to dependencies
-# COPY Source WhereInDockerImageShouldItBe
 COPY ./requirements.txt /requirements.txt
-
-# Intsall into the docker image requirements file using pip
+RUN apk add --update --no-cache postgresql-client jpeg-dev
+RUN apk add --update --no-cache --virtual .tmp-build-deps \
+      gcc libc-dev linux-headers postgresql-dev musl-dev zlib zlib-dev
 RUN pip install -r /requirements.txt
+RUN apk del .tmp-build-deps
 
-# Make directory for application source code
-#  1. Creates an empty folder on the docker image called app
-#  2. Switches to that as the default directory
-#     Any application we run using the docker container will start here
-#     Unless otherwise specified
-#  3. Copies from local machine app onto the app directory on the image
-#     Allows us to take the code into the docker image
 RUN mkdir /app
 WORKDIR /app
 COPY ./app /app
 
-# Create user to run app using docker
-# -D means run applications only
+RUN mkdir -p /vol/web/media
+RUN mkdir -p /vol/web/static
 RUN adduser -D user
-
-# RUN chown -R user:user /vol/
-# RUN chmod -R 755 /vol/web
-
-# Switch docker to user
-# This is for security
-#  Otherwise the image will run using root
-#   which means if someone compromises app, they are root (can do anything), user limits scope
+RUN chown -R user:user /vol/
+RUN chmod -R 755 /vol/web
 USER user
