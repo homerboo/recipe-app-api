@@ -11,7 +11,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Users require an email')
         user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
-        user.save(using=self._db) # req'd to support multiple databases
+        user.save(using=self._db)  # req'd to support multiple databases
 
         return user
 
